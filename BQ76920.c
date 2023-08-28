@@ -195,9 +195,9 @@ float SOCPack(BQ76920_t *BMS, float PackCurrent, float Vpack) {
 	BMS->SOCCapacity = (float) ((fullCapacityCurrent + BMS->currentUsage)
 			* 100.0f / fullCapacityCurrent);
 
-	// Implement Kalman Filter here. (NOT YET IMPLEMENTED)
+	// Kalman Filter
 	KalmanFilter kf_soc;
-	kalman_filter_init(&kf_soc, BMS->SOCEnergy, 1.0f, 0.05f); // Tune the initial_estimate_error_cov value based on your system
+	kalman_filter_init(&kf_soc, BMS->SOCEnergy, 1.0f, 0.05f); // Tune the initial_estimate_error_cov value based on the system
 	float fused_soc = kalman_filter_update(&kf_soc, BMS->SOCCapacity, 0.05f);
 	BMS->SOC = fused_soc;
 
@@ -223,9 +223,9 @@ float SOHPack(BQ76920_t *BMS) {
 	BMS->SOHCapacity = (float) (BMS->currentUsage * 100.0f / AmpereCapacity);
 	BMS->SOHOCV = (float) (BMS->smallestV * 100.0f / FullOCV);
 
-	// Implement Kalman Filter here. (NOT YET IMPLEMENTED)
+	// Kalman Filter
 	KalmanFilter kf_soh;
-	kalman_filter_init(&kf_soh, BMS->SOHEnergy, 1.0f, 0.05f); // Tune the initial_estimate_error_cov value based on your system
+	kalman_filter_init(&kf_soh, BMS->SOHEnergy, 1.0f, 0.05f); // Tune the initial_estimate_error_cov value based on the system
 	float fused_soh = kalman_filter_update(&kf_soh, BMS->SOHCapacity, 0.05f);
 	fused_soh = kalman_filter_update(&kf_soh, BMS->SOHOCV, 0.05f);
 	BMS->SOH = fused_soh;
